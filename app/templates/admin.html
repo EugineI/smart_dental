@@ -1,67 +1,122 @@
-<h2>Admin Dashboard</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h2>Admin Dashboard</h2>
 
-<h3>All Patients</h3>
-<ul>
-  {% for patient in patients %}
-    <li>{{ patient.name }} ({{ patient.email }})</li>
-  {% endfor %}
-</ul>
+    <!-- Patients List -->
+    <section>
+        <h3>All Patients</h3>
+        <ul class="patient-list">
+            {% for patient in patients %}
+                <li>{{ patient.name }} ({{ patient.email }})</li>
+            {% endfor %}
+        </ul>
+    </section>
 
-<hr>
+    <hr>
 
-<h3>Pending Appointments</h3>
-{% for app in pending_appointments %}
-  <form method="POST">
-    <input type="hidden" name="app_id" value="{{ app.id }}">
-    <p>Patient: {{ app.patient.name }}</p>
-    <p>Date: {{ app.date }}</p>
-    <p>Time: {{ app.time }}</p>
-    <p>Status: {{ app.status }}</p>
+    <!-- Pending Appointments -->
+    <section>
+        <h3>Pending Appointments</h3>
+        {% if pending_appointments %}
+        <table class="appointment-table">
+            <thead>
+                <tr>
+                    <th>Patient</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Dentist</th>
+                    <th>Message</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for app in pending_appointments %}
+                <tr>
+                    <form method="POST">
+                        <input type="hidden" name="app_id" value="{{ app.id }}">
+                        <td>{{ app.patient.name }}</td>
+                        <td>{{ app.date }}</td>
+                        <td>{{ app.time }}</td>
+                        <td>{{ app.status }}</td>
+                        <td>
+                            <select name="dentist" required>
+                                {% for d in doctors %}
+                                    <option value="{{ d.id }}">{{ d.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td><textarea name="message">{{ app.message }}</textarea></td>
+                        <td><button type="submit">Save</button></td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p>No pending appointments.</p>
+        {% endif %}
+    </section>
 
-    <label>Dentist:</label>
-    <select name="dentist" required>
-      {% for d in doctors %}
-        <option value="{{ d.id }}">{{ d.name }}</option>
-      {% endfor %}
-    </select>
+    <hr>
 
-    <label>Message:</label>
-    <textarea name="message">{{ app.message }}</textarea>
+    <!-- Approved Appointments -->
+    <section>
+        <h3>Approved Appointments</h3>
+        {% if approved_appointments %}
+        <table class="appointment-table">
+            <thead>
+                <tr>
+                    <th>Patient</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Dentist</th>
+                    <th>Message</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for app in approved_appointments %}
+                <tr>
+                    <form method="POST">
+                        <input type="hidden" name="app_id" value="{{ app.id }}">
+                        <td>{{ app.patient.name }}</td>
+                        <td>{{ app.date }}</td>
+                        <td>{{ app.time }}</td>
+                        <td>{{ app.status }}</td>
+                        <td>{{ app.dentist }}</td>
+                        <td><textarea name="message">{{ app.message }}</textarea></td>
+                        <td><button type="submit">Update</button></td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p>No approved appointments.</p>
+        {% endif %}
+    </section>
 
-    <button type="submit">Save</button>
-  </form>
-{% else %}
-  <p>No pending appointments.</p>
-{% endfor %}
+    <hr>
 
-<hr>
+    <!-- Add New Doctor -->
+    <section>
+        <h3>Add New Doctor</h3>
+        <form method="POST" class="add-doctor-form">
+            <input type="hidden" name="add_doctor" value="1">
+            <input type="text" name="name" placeholder="Doctor Name" required>
+            <input type="email" name="email" placeholder="Doctor Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Add Doctor</button>
+        </form>
+    </section>
+</body>
+</html>
 
-<h3>Approved Appointments</h3>
-{% for app in approved_appointments %}
-  <form method="POST">
-    <input type="hidden" name="app_id" value="{{ app.id }}">
-    <p>Patient: {{ app.patient.name }}</p>
-    <p>Date: {{ app.date }}</p>
-    <p>Time: {{ app.time }}</p>
-    <p>Status: {{ app.status }}</p>
-    <p>Dentist: {{ app.dentist }}</p>
-
-    <label>Message:</label>
-    <textarea name="message">{{ app.message }}</textarea>
-
-    <button type="submit">Update Message</button>
-  </form>
-{% else %}
-  <p>No approved appointments.</p>
-{% endfor %}
-
-<hr>
-
-<h3>Add New Doctor</h3>
-<form method="POST">
-  <input type="hidden" name="add_doctor" value="1">
-  <input type="text" name="name" placeholder="Doctor Name" required>
-  <input type="email" name="email" placeholder="Doctor Email" required>
-  <input type="password" name="password" placeholder="Password" required>
-  <button type="submit">Add Doctor</button>
-</form>

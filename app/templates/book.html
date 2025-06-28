@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Book Appointment</h2>
+  <form method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.date.label }} {{ form.date() }}<br><br>
+    {{ form.time.label }} {{ form.time() }}<br><br>
+    {{ form.reason.label }} {{ form.reason(rows=4) }}<br><br>
+    {{ form.submit() }}
+  </form>
+  <p><a href="{{ url_for('main.dashboard') }}">Back to Dashboard</a></p>
+{% endblock %}

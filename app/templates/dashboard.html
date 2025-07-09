@@ -40,4 +40,16 @@
     {% endif %}
   </div>
 </div>
+=======
+{% extends "base.html" %} {% block content %}
+Welcome, {{ name }}
++ Book New Appointment
+{% if appointments %}
+{% for appointment in appointments %} {% endfor %}
+Date	Time	Reason	Status	Dentist	Message
+{{ appointment.date.strftime('%Y-%m-%d') }}	{{ appointment.time.strftime('%H:%M') }}	{{ appointment.reason }}	{{ appointment.status }}	{{ appointment.dentist or 'Pending' }}	{{ appointment.message or 'No message yet' }}
+{% else %}
+You have no appointments yet.
+
+{% endif %}
 {% endblock %}

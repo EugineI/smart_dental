@@ -1,33 +1,43 @@
 {% extends "base.html" %}
 {% block content %}
-  <h2>Welcome, {{ name }}</h2>
-  <a href="{{ url_for('main.book') }}">+ Book New Appointment</a>
-  {% if appointments %}
-    <table>
-        <thead>
+<div class="admin-container">
+  <div class="admin-section">
+    <h2>Welcome, <span class="brand">{{ name }}</span></h2>
+
+    <div class="btn-group mb-3">
+      <a href="{{ url_for('main.book') }}" class="btn btn-primary">+ Book New Appointment</a>
+    </div>
+
+    {% if appointments %}
+      <div class="table-container">
+        <table class="appointment-table">
+          <thead>
             <tr>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Reason</th>
-                <th>Status</th>
-                <th>Dentist</th>
-                <th>Message</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Reason</th>
+              <th>Status</th>
+              <th>Dentist</th>
+              <th>Message</th>
             </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
             {% for appointment in appointments %}
             <tr>
-                <td>{{ appointment.date.strftime('%Y-%m-%d') }}</td>
-                <td>{{ appointment.time.strftime('%H:%M') }}</td>
-                <td>{{ appointment.reason }}</td>
-                <td>{{ appointment.status }}</td>
-                <td>{{ appointment.dentist or 'Pending' }}</td>
-                <td>{{ appointment.message or 'No message yet' }}</td>
+              <td>{{ appointment.date.strftime('%Y-%m-%d') }}</td>
+              <td>{{ appointment.time.strftime('%H:%M') }}</td>
+              <td>{{ appointment.reason }}</td>
+              <td>{{ appointment.status }}</td>
+              <td>{{ appointment.dentist or 'Pending' }}</td>
+              <td>{{ appointment.message or 'No message yet' }}</td>
             </tr>
             {% endfor %}
-        </tbody>
-    </table>
-{% else %}
-    <p>You have no appointments yet.</p>
-{% endif %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p>You have no appointments yet.</p>
+    {% endif %}
+  </div>
+</div>
 {% endblock %}

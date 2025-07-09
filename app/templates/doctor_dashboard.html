@@ -1,33 +1,39 @@
 {% extends "base.html" %}
 {% block content %}
-  <h2>Welcome Dr. {{ current_user.name }}</h2>
+<div class="admin-container">
+  <div class="admin-section">
+    <h2>Welcome Dr. <span class="brand">{{ current_user.name }}</span></h2>
 
-  {% if appointments %}
-    <table>
-      <thead>
-        <tr>
-          <th>Patient</th>
-          <th>Date</th>
-          <th>Time</th>
-          <th>Reason</th>
-          <th>Message</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for app in appointments %}
-          <tr>
-            <td>{{ app.patient.name }}</td>
-            <td>{{ app.date }}</td>
-            <td>{{ app.time }}</td>
-            <td>{{ app.reason }}</td>
-            <td>{{ app.message }}</td>
-            <td>{{ app.status }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  {% else %}
-    <p>No appointments assigned to you yet.</p>
-  {% endif %}
+    {% if appointments %}
+      <div class="table-container">
+        <table class="appointment-table">
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Reason</th>
+              <th>Message</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for app in appointments %}
+              <tr>
+                <td>{{ app.patient.name }}</td>
+                <td>{{ app.date }}</td>
+                <td>{{ app.time }}</td>
+                <td>{{ app.reason }}</td>
+                <td>{{ app.message }}</td>
+                <td>{{ app.status }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p>No appointments assigned to you yet.</p>
+    {% endif %}
+  </div>
+</div>
 {% endblock %}

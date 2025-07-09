@@ -28,7 +28,6 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Registration successful. Please log in.')
         return redirect(url_for('main.login'))
     return render_template('register.html', form=form)
 
@@ -71,7 +70,6 @@ def book():
         )
         db.session.add(appointment)
         db.session.commit()
-        flash('Appointment booked successfully!')
         return redirect(url_for('main.dashboard'))
     return render_template('book.html', form=form)
 
@@ -153,7 +151,6 @@ def admin_dashboard():
             elif appointment.status == "Approved":
                 # Only update the message
                 appointment.message = message
-                flash(f"Message updated for appointment {app_id}.")
             else:
                 flash("Unknown appointment status.")
 
